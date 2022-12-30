@@ -43,6 +43,11 @@ func (f Faker) Locale(locale string) Faker {
 	return f
 }
 
+//
+//func (f Faker) RegisterStrategy(locale string, strategy interface{}) {
+//
+//}
+
 func (f Faker) Person() contract.Person {
 	return f.personStrategies[f.localeName]
 }

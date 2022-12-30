@@ -3,15 +3,8 @@ package src
 import (
 	"github.com/onlw/faker-go/v2/src/consts"
 	"github.com/onlw/faker-go/v2/src/faker"
-	"github.com/onlw/faker-go/v2/src/provider/en_US"
 	"testing"
 )
-
-func TestCreate(*testing.T) {
-	//name := zh_CN.Person{}.Name()
-	name := en_US.Person{}.Name()
-	println(name)
-}
 
 func TestPerson(*testing.T) {
 	name := faker.NewFaker().Locale(consts.LocaleZhCn).Person().Name()
@@ -21,6 +14,13 @@ func TestPerson(*testing.T) {
 }
 
 func TestAddress(t *testing.T) {
-	name := faker.NewFaker().Locale(consts.LocaleZhCn).Address().AddressName()
-	println(name)
+	val := faker.NewFaker().Address().AddressName()
+	t.Logf(val)
+	val = faker.NewFaker().Locale(consts.LocaleZhCn).Address().AddressName()
+	t.Logf(val)
 }
+
+//func ExampleAddress() {
+//	fmt.Println(faker.NewFaker().Address().AddressName())
+//	// Output: 364 Unions ville, Norfolk, Ohio 99536
+//}

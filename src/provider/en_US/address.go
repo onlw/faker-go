@@ -3,100 +3,84 @@ package en_US
 import (
 	"github.com/onlw/faker-go/v2/src/model"
 	"github.com/onlw/faker-go/v2/src/util"
+	"strings"
 )
 
-var cities = []string{"北京", "上海", "天津", "重庆",
-	"哈尔滨", "长春", "沈阳", "呼和浩特",
-	"石家庄", "乌鲁木齐", "兰州", "西宁",
-	"西安", "银川", "郑州", "济南",
-	"太原", "合肥", "武汉", "长沙",
-	"南京", "成都", "贵阳", "昆明",
-	"南宁", "拉萨", "杭州", "南昌",
-	"广州", "福州", "海口",
-	"香港", "澳门"}
-
-var areas = []string{"西夏区", "永川区", "秀英区", "高港区",
-	"清城区", "兴山区", "锡山区", "清河区",
-	"龙潭区", "华龙区", "海陵区", "滨城区",
-	"东丽区", "高坪区", "沙湾区", "平山区",
-	"城北区", "海港区", "沙市区", "双滦区",
-	"长寿区", "山亭区", "南湖区", "浔阳区",
-	"南长区", "友好区", "安次区", "翔安区",
-	"沈河区", "魏都区", "西峰区", "萧山区",
-	"金平区", "沈北新区", "孝南区", "上街区",
-	"城东区", "牧野区", "大东区", "白云区",
-	"花溪区", "吉利区", "新城区", "怀柔区",
-	"六枝特区", "涪城区", "清浦区", "南溪区",
-	"淄川区", "高明区", "金水区", "中原区",
-	"高新开发区", "经济开发新区", "新区"}
-
-var countries = []string{"阿富汗", "阿拉斯加", "阿尔巴尼亚", "阿尔及利亚",
-	"安道尔", "安哥拉", "安圭拉岛英", "安提瓜和巴布达",
-	"阿根廷", "亚美尼亚", "阿鲁巴岛", "阿森松", "澳大利亚",
-	"奥地利", "阿塞拜疆", "巴林", "孟加拉国", "巴巴多斯",
-	"白俄罗斯", "比利时", "伯利兹", "贝宁", "百慕大群岛",
-	"不丹", "玻利维亚", "波斯尼亚和黑塞哥维那", "博茨瓦纳",
-	"巴西", "保加利亚", "布基纳法索", "布隆迪", "喀麦隆",
-	"加拿大", "加那利群岛", "佛得角", "开曼群岛", "中非",
-	"乍得", "智利", "圣诞岛", "科科斯岛", "哥伦比亚",
-	"巴哈马国", "多米尼克国", "科摩罗", "刚果", "科克群岛",
-	"哥斯达黎加", "克罗地亚", "古巴", "塞浦路斯", "捷克",
-	"丹麦", "迪戈加西亚岛", "吉布提", "多米尼加共和国",
-	"厄瓜多尔", "埃及", "萨尔瓦多", "赤道几内亚",
-	"厄立特里亚", "爱沙尼亚", "埃塞俄比亚", "福克兰群岛",
-	"法罗群岛", "斐济", "芬兰", "法国", "法属圭亚那",
-	"法属波里尼西亚", "加蓬", "冈比亚", "格鲁吉亚", "德国",
-	"加纳", "直布罗陀", "希腊", "格陵兰岛", "格林纳达",
-	"瓜德罗普岛", "关岛", "危地马拉", "几内亚", "几内亚比绍",
-	"圭亚那", "海地", "夏威夷", "洪都拉斯", "匈牙利", "冰岛",
-	"印度", "印度尼西亚", "伊郎", "伊拉克", "爱尔兰", "以色列",
-	"意大利", "科特迪瓦", "牙买加", "日本", "约旦", "柬埔塞",
-	"哈萨克斯坦", "肯尼亚", "基里巴斯", "朝鲜", "韩国", "科威特",
-	"吉尔吉斯斯坦", "老挝", "拉脱维亚", "黎巴嫩", "莱索托",
-	"利比里亚", "利比亚", "列支敦士登", "立陶宛", "卢森堡",
-	"马其顿", "马达加斯加", "马拉维", "马来西亚", "马尔代夫",
-	"马里", "马耳他", "马里亚纳群岛", "马绍尔群岛", "马提尼克",
-	"毛里塔尼亚", "毛里求斯", "马约特岛", "墨西哥", "密克罗尼西亚",
-	"中途岛", "摩尔多瓦", "摩纳哥", "蒙古", "蒙特塞拉特岛",
-	"摩洛哥", "莫桑比克", "缅甸", "纳米比亚", "瑙鲁", "尼泊尔",
-	"荷兰", "荷属安的列斯群岛", "新喀里多尼亚群岛", "新西兰",
-	"尼加拉瓜", "尼日尔", "尼日利亚", "纽埃岛", "诺福克岛",
-	"挪威", "阿曼", "帕劳", "巴拿马", "巴布亚新几内亚", "巴拉圭",
-	"秘鲁", "菲律宾", "波兰", "葡萄牙", "巴基斯坦", "波多黎各",
-	"卡塔尔", "留尼汪岛", "罗马尼亚", "俄罗斯", "卢旺达",
-	"东萨摩亚", "西萨摩亚", "圣马力诺", "圣皮埃尔岛及密克隆岛",
-	"圣多美和普林西比", "沙特阿拉伯", "塞内加尔", "塞舌尔",
-	"新加坡", "斯洛伐克", "斯洛文尼亚", "所罗门群岛", "索马里",
-	"南非", "西班牙", "斯里兰卡", "圣克里斯托弗和尼维斯",
-	"圣赫勒拿", "圣卢西亚", "圣文森特岛", "苏丹", "苏里南",
-	"斯威士兰", "瑞典", "瑞士", "叙利亚", "塔吉克斯坦", "坦桑尼亚",
-	"泰国", "阿拉伯联合酋长国", "多哥", "托克劳群岛", "汤加",
-	"特立尼达和多巴哥", "突尼斯", "土耳其", "土库曼斯坦",
-	"特克斯和凯科斯群岛(", "图瓦卢", "美国", "乌干达", "乌克兰",
-	"英国", "乌拉圭", "乌兹别克斯坦", "瓦努阿图", "梵蒂冈",
-	"委内瑞拉", "越南", "维尔京群岛", "维尔京群岛和圣罗克伊",
-	"威克岛", "瓦里斯和富士那群岛", "西撒哈拉", "也门", "南斯拉夫",
-	"扎伊尔", "赞比亚", "桑给巴尔", "津巴布韦", "中华人民共和国", "中国"}
+var address = map[string][]string{
+	"number":        {"#####", "####", "###"},
+	"street_prefix": {"North", "East", "West", "South", "New", "Lake", "Port"},
+	"street_name":   {"Alley", "Avenue", "Branch", "Bridge", "Brook", "Brooks", "Burg", "Burgs", "Bypass", "Camp", "Canyon", "Cape", "Causeway", "Center", "Centers", "Circle", "Circles", "Cliff", "Cliffs", "Club", "Common", "Corner", "Corners", "Course", "Court", "Courts", "Cove", "Coves", "Creek", "Crescent", "Crest", "Crossing", "Crossroad", "Curve", "Dale", "Dam", "Divide", "Drive", "Drive", "Drives", "Estate", "Estates", "Expressway", "Extension", "Extensions", "Fall", "Falls", "Ferry", "Field", "Fields", "Flat", "Flats", "Ford", "Fords", "Forest", "Forge", "Forges", "Fork", "Forks", "Fort", "Freeway", "Garden", "Gardens", "Gateway", "Glen", "Glens", "Green", "Greens", "Grove", "Groves", "Harbor", "Harbors", "Haven", "Heights", "Highway", "Hill", "Hills", "Hollow", "Inlet", "Inlet", "Island", "Island", "Islands", "Islands", "Isle", "Isle", "Junction", "Junctions", "Key", "Keys", "Knoll", "Knolls", "Lake", "Lakes", "Land", "Landing", "Lane", "Light", "Lights", "Loaf", "Lock", "Locks", "Locks", "Lodge", "Lodge", "Loop", "Mall", "Manor", "Manors", "Meadow", "Meadows", "Mews", "Mill", "Mills", "Mission", "Mission", "Motorway", "Mount", "Mountain", "Mountain", "Mountains", "Mountains", "Neck", "Orchard", "Oval", "Overpass", "Park", "Parks", "Parkway", "Parkways", "Pass", "Passage", "Path", "Pike", "Pine", "Pines", "Place", "Plain", "Plains", "Plains", "Plaza", "Plaza", "Point", "Points", "Port", "Port", "Ports", "Ports", "Prairie", "Prairie", "Radial", "Ramp", "Ranch", "Rapid", "Rapids", "Rest", "Ridge", "Ridges", "River", "Road", "Road", "Roads", "Roads", "Route", "Row", "Rue", "Run", "Shoal", "Shoals", "Shore", "Shores", "Skyway", "Spring", "Springs", "Springs", "Spur", "Spurs", "Square", "Square", "Squares", "Squares", "Station", "Station", "Stravenue", "Stravenue", "Stream", "Stream", "Street", "Street", "Streets", "Summit", "Summit", "Terrace", "Throughway", "Trace", "Track", "Trafficway", "Trail", "Trail", "Tunnel", "Tunnel", "Turnpike", "Turnpike", "Underpass", "Union", "Unions", "Valley", "Valleys", "Via", "Viaduct", "View", "Views", "Village", "Village", "Villages", "Ville", "Vista", "Vista", "Walk", "Walks", "Wall", "Way", "Ways", "Well", "Wells"},
+	"street_suffix": {"town", "ton", "land", "ville", "berg", "burgh", "borough", "bury", "view", "port", "mouth", "stad", "furt", "chester", "mouth", "fort", "haven", "side", "shire"},
+	"city":          {"New York City", "Los Angeles", "Chicago", "Houston", "Philadelphia", "Phoenix", "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Jacksonville", "Indianapolis", "San Francisco", "Columbus", "Fort Worth", "Charlotte", "Detroit", "El Paso", "Memphis", "Boston", "Seattle", "Denver", "Washington", "Nashville-Davidson", "Baltimore", "Louisville/Jefferson", "Portland", "Oklahoma ", "Milwaukee", "Las Vegas", "Albuquerque", "Tucson", "Fresno", "Sacramento", "Long Beach", "Kansas ", "Mesa", "Virginia Beach", "Atlanta", "Colorado Springs", "Raleigh", "Omaha", "Miami", "Oakland", "Tulsa", "Minneapolis", "Cleveland", "Wichita", "Arlington", "New Orleans", "Bakersfield", "Tampa", "Honolulu", "Anaheim", "Aurora", "Santa Ana", "St. Louis", "Riverside", "Corpus Christi", "Pittsburgh", "Lexington-Fayette", "Stockton", "Cincinnati", "St. Paul", "Toledo", "Newark", "Greensboro", "Plano", "Henderson", "Lincoln", "Buffalo", "Fort Wayne", "Jersey ", "Chula Vista", "Orlando", "St. Petersburg", "Norfolk", "Chandler", "Laredo", "Madison", "Durham", "Lubbock", "Winston-Salem", "Garland", "Glendale", "Hialeah", "Reno", "Baton Rouge", "Irvine", "Chesapeake", "Irving", "Scottsdale", "North Las Vegas", "Fremont", "San Bernardino", "Boise", "Birmingham"},
+	"state":         {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"},
+	"state_abr":     {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "AE", "AA", "AP"},
+	"zip":           {"#####"},
+	"country":       {"Andorra", "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Antarctica", "Argentina", "American Samoa", "Austria", "Australia", "Aruba", "Åland Islands", "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "Saint Barthélemy", "Bermuda", "Brunei Darussalam", "Bolivia (Plurinational State of)", "Bonaire, Sint Eustatius and Saba", "Brazil", "Bahamas", "Bhutan", "Bouvet Island", "Botswana", "Belarus", "Belize", "Canada", "Cocos (Keeling) Islands", "Congo, Democratic Republic of the", "Central African Republic", "Congo", "Switzerland", "Côte d'Ivoire", "Cook Islands", "Chile", "Cameroon", "China", "Colombia", "Costa Rica", "Cuba", "Cabo Verde", "Curaçao", "Christmas Island", "Cyprus", "Czechia", "Germany", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador", "Estonia", "Egypt", "Western Sahara", "Eritrea", "Spain", "Ethiopia", "Finland", "Fiji", "Falkland Islands (Malvinas)", "Micronesia (Federated States of)", "Faroe Islands", "France", "Gabon", "United Kingdom of Great Britain and Northern Ireland", "Grenada", "Georgia", "French Guiana", "Guernsey", "Ghana", "Gibraltar", "Greenland", "Gambia", "Guinea", "Guadeloupe", "Equatorial Guinea", "Greece", "South Georgia and the South Sandwich Islands", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong", "Heard Island and McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "Ireland", "Israel", "Isle of Man", "India", "British Indian Ocean Territory", "Iraq", "Iran (Islamic Republic of)", "Iceland", "Italy", "Jersey", "Jamaica", "Jordan", "Japan", "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "Saint Kitts and Nevis", "Korea (Democratic People's Republic of)", "Korea, Republic of", "Kuwait", "Cayman Islands", "Kazakhstan", "Lao People's Democratic Republic", "Lebanon", "Saint Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Libya", "Morocco", "Monaco", "Moldova, Republic of", "Montenegro", "Saint Martin (French part)", "Madagascar", "Marshall Islands", "North Macedonia", "Mali", "Myanmar", "Mongolia", "Macao", "Northern Mariana Islands", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico", "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea", "Philippines", "Pakistan", "Poland", "Saint Pierre and Miquelon", "Pitcairn", "Puerto Rico", "Palestine, State of", "Portugal", "Palau", "Paraguay", "Qatar", "Réunion", "Romania", "Serbia", "Russian Federation", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan", "Sweden", "Singapore", "Saint Helena, Ascension and Tristan da Cunha", "Slovenia", "Svalbard and Jan Mayen", "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "Sao Tome and Principe", "El Salvador", "Sint Maarten (Dutch part)", "Syrian Arab Republic", "Eswatini", "Turks and Caicos Islands", "Chad", "French Southern Territories", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia", "Tonga", "Turkey", "Trinidad and Tobago", "Tuvalu", "Taiwan, Province of China", "Tanzania, United Republic of", "Ukraine", "Uganda", "United States Minor Outlying Islands", "United States of America", "Uruguay", "Uzbekistan", "Holy See", "Saint Vincent and the Grenadines", "Venezuela (Bolivarian Republic of)", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Viet Nam", "Vanuatu", "Wallis and Futuna", "Samoa", "Yemen", "Mayotte", "South Africa", "Zambia", "Zimbabwe"},
+	"country_abr":   {"AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR", "BS", "BT", "BV", "BW", "BY", "BZ", "CA", "CC", "CD", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CR", "CU", "CV", "CW", "CX", "CY", "CZ", "DE", "DJ", "DK", "DM", "DO", "DZ", "EC", "EE", "EG", "EH", "ER", "ES", "ET", "FI", "FJ", "FK", "FM", "FO", "FR", "GA", "GB", "GD", "GE", "GF", "GG", "GH", "GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU", "GW", "GY", "HK", "HM", "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IM", "IN", "IO", "IQ", "IR", "IS", "IT", "JE", "JM", "JO", "JP", "KE", "KG", "KH", "KI", "KM", "KN", "KP", "KR", "KW", "KY", "KZ", "LA", "LB", "LC", "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD", "ME", "MF", "MG", "MH", "MK", "ML", "MM", "MN", "MO", "MP", "MQ", "MR", "MS", "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NF", "NG", "NI", "NL", "NO", "NP", "NR", "NU", "NZ", "OM", "PA", "PE", "PF", "PG", "PH", "PK", "PL", "PM", "PN", "PR", "PS", "PT", "PW", "PY", "QA", "RE", "RO", "RS", "RU", "RW", "SA", "SB", "SC", "SD", "SE", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS", "ST", "SV", "SX", "SY", "SZ", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TL", "TM", "TN", "TO", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"},
+}
 
 type Address struct {
 }
 
 func (a Address) AddressName() string {
-	return a.City() + util.GetRandValue(areas)
+	street := a.Street()
+	city := a.City()
+	state := a.State()
+	zip := a.Zip()
+
+	return street + ", " + city + ", " + state + " " + zip
 }
 
+func (a Address) Street() string {
+	var street = ""
+	switch randInt := util.RandIntRange(1, 2); randInt {
+	case 1:
+		street = streetNumber() + " " + streetPrefix() + " " + streetName() + " " + streetSuffix()
+	case 2:
+		street = streetNumber() + " " + streetName() + " " + streetSuffix()
+	}
+
+	return street
+}
+
+func streetNumber() string {
+	return strings.TrimLeft(util.ReplaceWithNumbers(util.GetRandValue(address["number"])), "0")
+}
+
+func streetPrefix() string {
+	return util.GetRandValue(address["street_prefix"])
+}
+
+func streetSuffix() string {
+	return util.GetRandValue(address["street_suffix"])
+}
+
+func streetName() string { return util.GetRandValue(address["street_name"]) }
+
 func (a Address) City() string {
-	return util.GetRandValue(cities)
+	return util.GetRandValue(address["city"])
+}
+
+func (a Address) State() string {
+	return util.GetRandValue(address["state"])
+}
+func (a Address) Zip() string {
+	return util.ReplaceWithNumbers(util.GetRandValue(address["zip"]))
 }
 
 func (a Address) Country() string {
-	return util.GetRandValue(countries)
+	return ""
 }
 
 func (a Address) Address() model.AddressInfo {
+	street := a.Street()
+	city := a.City()
+	state := a.State()
+	zip := a.Zip()
+
 	return model.AddressInfo{
-		Address: a.AddressName(),
-		City:    a.City(),
-		Country: a.Country(),
+		Address: street + ", " + city + ", " + state + " " + zip,
+		City:    city,
+		Zip:     zip,
 	}
 }
