@@ -23,7 +23,7 @@ type Faker struct {
 
 var phoneStrategies = map[string]contract.Phone{
 	consts.LocaleZhCn: &zh_CN.Phone{},
-	//consts.LocaleEnUs: &en_US.Phone{},
+	consts.LocaleEnUs: &en_US.Phone{},
 }
 
 func NewFaker() *Faker {

@@ -24,6 +24,8 @@ func TestPhone(t *testing.T) {
 	//t.Logf(val)
 	val := NewFaker().Locale(consts.LocaleZhCn).Phone().PhoneNumber()
 	t.Logf(val)
+	val = NewFaker().Locale(consts.LocaleEnUs).Phone().PhoneNumber()
+	t.Logf(val)
 }
 
 //func ExampleAddress() {
