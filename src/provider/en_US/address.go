@@ -1,4 +1,4 @@
-package zh_CN
+package en_US
 
 import (
 	"github.com/onlw/faker-go/v2/src/model"
