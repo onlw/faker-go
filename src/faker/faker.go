@@ -19,11 +19,17 @@ type Faker struct {
 	personStrategies  map[string]contract.Person
 	addressStrategies map[string]contract.Address
 	phoneStrategies   map[string]contract.Phone
+	companyStrategies map[string]contract.Company
 }
 
 var phoneStrategies = map[string]contract.Phone{
 	consts.LocaleZhCn: &zh_CN.Phone{},
 	consts.LocaleEnUs: &en_US.Phone{},
+}
+
+var companyStrategies = map[string]contract.Company{
+	consts.LocaleZhCn: &zh_CN.Company{},
+	consts.LocaleEnUs: &en_US.Company{},
 }
 
 func NewFaker() *Faker {
@@ -38,7 +44,8 @@ func NewFaker() *Faker {
 				consts.LocaleZhCn: &zh_CN.Address{},
 				consts.LocaleEnUs: &en_US.Address{},
 			},
-			phoneStrategies: phoneStrategies,
+			phoneStrategies:   phoneStrategies,
+			companyStrategies: companyStrategies,
 		}
 	})
 	return instance

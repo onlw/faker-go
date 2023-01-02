@@ -1,12 +1,10 @@
 package zh_CN
 
 import (
-	"github.com/onlw/faker-go/v2/src/provider"
 	"github.com/onlw/faker-go/v2/src/util"
 )
 
 type Person struct {
-	provider.Person
 }
 
 var lastName = []string{"李", "王", "张", "刘", "陈", "杨", "赵", "黄", "周", "吴",
