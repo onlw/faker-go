@@ -20,6 +20,7 @@ type Faker struct {
 	addressStrategies map[string]contract.Address
 	phoneStrategies   map[string]contract.Phone
 	companyStrategies map[string]contract.Company
+	imageStrategies   map[string]contract.Image
 }
 
 var phoneStrategies = map[string]contract.Phone{
@@ -30,6 +31,9 @@ var phoneStrategies = map[string]contract.Phone{
 var companyStrategies = map[string]contract.Company{
 	consts.LocaleZhCn: &zh_CN.Company{},
 	consts.LocaleEnUs: &en_US.Company{},
+}
+var imageStrategies = map[string]contract.Image{
+	consts.LocaleEnUs: &en_US.Image{},
 }
 
 func NewFaker() *Faker {
@@ -46,6 +50,7 @@ func NewFaker() *Faker {
 			},
 			phoneStrategies:   phoneStrategies,
 			companyStrategies: companyStrategies,
+			imageStrategies:   imageStrategies,
 		}
 	})
 	return instance
@@ -77,3 +82,22 @@ func (f Faker) Phone() contract.Phone {
 func (f Faker) Company() contract.Company {
 	return f.companyStrategies[f.localeName]
 }
+
+func (f Faker) Image() contract.Image {
+	return f.imageStrategies[f.localeName]
+}
+
+func Locales(locale string) *Faker {
+	instance.localeName = locale
+
+	return instance
+}
+
+func Image() contract.Image {
+	println(instance.imageStrategies)
+	return instance.imageStrategies[instance.localeName]
+}
+
+//func ImageModel() model.Image {
+//	//return instance.imageStrategies[instance.localeName].()
+//}

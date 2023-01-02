@@ -35,6 +35,11 @@ func TestCompany(t *testing.T) {
 	t.Logf(val)
 }
 
+func TestImage(t *testing.T) {
+	val := NewFaker().Image().ImageURL(200, 200)
+	t.Logf(val)
+}
+
 //func ExampleAddress() {
 //	fmt.Println(NewFaker().Address().AddressName())
 //	// Output: 364 Unions ville, Norfolk, Ohio 99536
