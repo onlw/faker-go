@@ -1,7 +1,6 @@
 package en_US
 
 import (
-	"github.com/onlw/faker-go/v2/src/provider"
 	"github.com/onlw/faker-go/v2/src/util"
 )
 
@@ -83,7 +82,6 @@ var firstNameFemale = []string{"Aaliyah", "Abagail", "Abbey", "Abbie", "Abbigail
 	"Zaria", "Zelda", "Zella", "Zelma", "Zena", "Zetta", "Zita", "Zoe", "Zoey", "Zoie", "Zoila", "Zola", "Zora", "Zula"}
 
 type Person struct {
-	provider.Person
 }
 
 func (p Person) Name() string {

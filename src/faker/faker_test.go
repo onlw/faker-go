@@ -28,6 +28,13 @@ func TestPhone(t *testing.T) {
 	t.Logf(val)
 }
 
+func TestCompany(t *testing.T) {
+	val := NewFaker().Locale(consts.LocaleZhCn).Company().CompanyName()
+	t.Logf(val)
+	val = NewFaker().Locale(consts.LocaleEnUs).Company().CompanyName()
+	t.Logf(val)
+}
+
 //func ExampleAddress() {
 //	fmt.Println(NewFaker().Address().AddressName())
 //	// Output: 364 Unions ville, Norfolk, Ohio 99536

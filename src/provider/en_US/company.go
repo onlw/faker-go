@@ -11,5 +11,5 @@ var company = map[string][]string{
 }
 
 func (c Company) CompanyName() string {
-	return util.GetRandValue(company["prefix"]) + util.GetRandValue(company["suffix"])
+	return util.GetRandValue(company["prefix"]) + " " + util.GetRandValue(company["suffix"])
 }

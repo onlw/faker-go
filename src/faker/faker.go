@@ -73,3 +73,7 @@ func (f Faker) Address() contract.Address {
 func (f Faker) Phone() contract.Phone {
 	return f.phoneStrategies[f.localeName]
 }
+
+func (f Faker) Company() contract.Company {
+	return f.companyStrategies[f.localeName]
+}
